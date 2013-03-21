@@ -63,17 +63,17 @@ def folio_sim(dt_start,dt_end,ls_symbol,ls_allocation):
     # calculate the daily return of the portfolio
     tsu.returnize0(sum_daily_ret_each_day)
     #calculate the average return 
-    average_daily_return = np.mean(sum_daily_ret_each_day)
+    f_average_daily_return = np.mean(sum_daily_ret_each_day)
     #calculate the Risk(Volatility)  of the portfolio
-    std_of_daily_return = np.std(sum_daily_ret_each_day)
+    f_std_of_daily_return = np.std(sum_daily_ret_each_day)
     #calculate the Sharpe Ratio of the portfolio
-    sharpe_ratio = np.sqrt(252) * ( average_daily_return/std_of_daily_return)
+    f_sharpe_ratio = np.sqrt(252) * ( f_average_daily_return/f_std_of_daily_return)
     #cum_daily_ret=np.cumprod(1 + na_rets, axis=0,dtype=float)
     #na_portrets = np.sum(sum_daily_ret_each_day)
     na_port_total = np.cumprod(sum_daily_ret_each_day + 1)
     na_component_total =np.cumprod(na_normalized_price + 1, axis=0)
     # calculate cumulative return
-    cum_daily_ret = cc[rows]
+    f_cum_daily_ret = cc[rows]
 
     # Print the Formatted Output
     print "****************"
@@ -81,12 +81,12 @@ def folio_sim(dt_start,dt_end,ls_symbol,ls_allocation):
     print "end date:" + str(dt_end)
     print "symbols: " + str(ls_symbol)
     print "Allocation:" + str(ls_allocation)
-    print "Sharpe Ratio: " + str(sharpe_ratio)
-    print "Volatility of  daily return: " + str(std_of_daily_return)
-    print "average daily return: " + str(average_daily_return)
-    print "Cumulative Return: " + str(cum_daily_ret)
+    print "Sharpe Ratio: " + str(f_sharpe_ratio)
+    print "Volatility of  daily return: " + str(f_std_of_daily_return)
+    print "average daily return: " + str(f_average_daily_return)
+    print "Cumulative Return: " + str(f_cum_daily_ret)
     print "****************"
-
+    return f_sharpe_ratio
 
 def main():
     #List of Portfolio symbols to be analyzed

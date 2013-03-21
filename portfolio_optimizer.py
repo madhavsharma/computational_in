@@ -47,14 +47,6 @@ def folio_sym(dt_start,dt_end,ls_symbol,ls_allocation):
 
     # Getting the numpy ndarray of close prices.
     na_price = d_data['close'].values
-    #na_price_folio = na_price[:] * ls_allocation
-    # Plotting the prices with x-axis=timestamps
-    plt.clf()
-    plt.plot(ldt_timestamps, na_price)
-    plt.legend(ls_symbols)
-    plt.ylabel('Adjusted Close')
-    plt.xlabel('Date')
-    plt.savefig('adjustedclose.pdf', format='pdf')
 
     # Normalizing the prices to start at 1 and see relative returns
     na_normalized_price = na_price / na_price[0, :]
@@ -70,17 +62,17 @@ def folio_sym(dt_start,dt_end,ls_symbol,ls_allocation):
     # calculate the daily return of the portfolio 
     tsu.returnize0(sum_daily_ret_each_day)
     # calculate the average return of Portfolio
-    average_daily_return = np.mean(sum_daily_ret_each_day)
+    f_average_daily_return = np.mean(sum_daily_ret_each_day)
     # calculate the Risk(Volatility)  of the portfolio
-    std_of_daily_return = np.std(sum_daily_ret_each_day)
+    f_std_of_daily_return = np.std(sum_daily_ret_each_day)
     # calculate the Sharpe Ratio of the portfolio ( assuming buying and hold for a year)
-    sharpe_ratio = np.sqrt(252) * ( average_daily_return/std_of_daily_return)
+    f_sharpe_ratio = np.sqrt(252) * ( f_average_daily_return/f_std_of_daily_return)
 
 
     print "******" +"\n"
     print "Allocation:" + str(ls_allocation)
-    print "Sharpe Ratio: " + str(sharpe_ratio)
-    return sharpe_ratio
+    print "Sharpe Ratio: " + str(f_sharpe_ratio)
+    return f_sharpe_ratio
 
 def main():
     # initialize of f_max_sharpe_ratio, ls_best_portfolio
