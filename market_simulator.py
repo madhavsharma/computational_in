@@ -25,17 +25,22 @@ import numpy as np
 # System Imports
 import sys
 from collections import defaultdict
+import csv
+from time import strptime
 
 def marketsim(argv):
     ''' Main Function'''
-    #np.set_printoptions(threshold='nan')
-    #f_values = open('f_values.txt','w')
+
     #f_orders = open('f_orders.txt','w')
     f_portfolio_value = 0.0
     f_cash = float(argv[0])
     f_total_fund =f_portfolio_value + f_cash
     # Reading the portfolio
-    na_portfolio = np.loadtxt('orders2.csv', dtype='f4,f4,f4,S5,S5,f4',
+    s_order_file = str(argv[1])
+    s_value_file = str(argv[2])
+    #f_values = open(s_value_file,'wb')
+    ls_values_data = []
+    na_portfolio = np.loadtxt(s_order_file, dtype='f4,f4,f4,S5,S5,f4',
                         delimiter=",", comments="#", skiprows=0)
     na_orders = np.sort(na_portfolio,axis = 0)
     #na_portfolio_skeleton = np.empty((1,6))
@@ -113,10 +118,6 @@ def marketsim(argv):
             index = order_date.index(ldt_timestamps[ts])
             #index = np.where(order_date==ldt_timestamps[ts])
 
-    '''for ele in ldt_timestamps:
-        if((dicto[ele])):
-            print dicto[ele]
-    '''
     #print (np.array(ldt_timestamps)).shape,(na_price.shape)
     np_timestamp = np.array(ldt_timestamps)
     np_ts = np_timestamp.reshape(len(ldt_timestamps),1)
@@ -148,13 +149,15 @@ def marketsim(argv):
 				#update holdings
 				dict_symb_holding[s_stock] += (-1*(dict_action[s_action])*(f_number))
 				#calculate holdings value
-				for stock in dict_symb_holding.keys():
-					f_portfolio_value += ((na_price_ts[i][dict_sorted_symb[stock]])* (dict_symb_holding[stock]))
-				print na_price_ts[i][0],s_action,s_stock,na_price_ts[i][dict_sorted_symb[s_stock]],dict_symb_holding[s_stock],'cash_val_of_trade',f_traded_cash,'cash_in_hand',f_cash,'portfolio_value',f_portfolio_value
+				#print na_price_ts[i][0],s_action,s_stock,na_price_ts[i][dict_sorted_symb[s_stock]],dict_symb_holding[s_stock],'cash_val_of_trade',f_traded_cash,'cash_in_hand',f_cash
 				f_total_fund = f_cash + f_portfolio_value
 				print 'total_fund',f_total_fund
 				#print 'after_trade_holdings',dict_symb_holding,'total_fund',f_total_fund
-			print "Trade over on ", na_price_ts[i][0],len(value),'current_holdings',dict_symb_holding,'total_fund',f_total_fund
+			for stock in dict_symb_holding.keys():
+				f_portfolio_value += ((na_price_ts[i][dict_sorted_symb[stock]])* (dict_symb_holding[stock]))
+			print "Trade over on ", na_price_ts[i][0],len(value),'current_holdings',dict_symb_holding,'total_fund',f_total_fund,'portfolio_value',f_portfolio_value
+			#f_values.writelines((str(na_price_ts[i][0]),str(f_total_fund)))
+			#ls_values_data.append((na_price_ts[i][0].strftime('%Y,%m,%d'),f_total_fund))
 		else:
 			print 'no trade on this date holdings are ', dict_symb_holding
 			f_portfolio_value=0
@@ -166,42 +169,22 @@ def marketsim(argv):
 			print 'current_holdings_no_order_executed',dict_symb_holding,'cash_in_hand',f_cash,'Portfolio_value',f_portfolio_value,'total_fund',(f_cash + f_portfolio_value)
 		f_total_fund = f_cash + f_portfolio_value
 		print na_price_ts[i][0],f_total_fund
+		ls_values_data.append((na_price_ts[i][0].strftime('%Y,%m,%d'),f_total_fund))
 		print '***************************************************************************'
-			
-				
-				
-			
-				
-				
-			#f_initial_fund_value += 
-			#print dicto[na_price_ts[i][0]]
-            	
-    #f_values.write(str(na_price_ts))
+    data_length = len(ls_values_data)
+    #print ls_values_data
+    #print type(ls_values_data), len(ls_values_data)
+    out = csv.writer(open(s_value_file,"w"), delimiter=',')
+    for i in range(len(ls_values_data)):
+		ls_value_date = ls_values_data[i][0].split(',')
+		i_year = int(ls_value_date[0])
+		i_month = int(ls_value_date[1])
+		i_day = int(ls_value_date[2])
+		out.writerow((i_year,i_month,i_day,int(ls_values_data[i][1])))
+    
     #f_values.close()
-    #f_orders.write(str(na_orders))
-    #f_values.close()
-    #print na_orders
-    #print order_date			
-    #for i in na_price:
-        #print i[0]
-			
-    '''for i in ls_index:
-        dt_order = order_date[i]
-        for k in range(len(na_orders)):
-            print dt.datetime(na_orders[k][0],na_orders[k][1],na_orders[k][2],16)
-            if((dt.datetime(na_orders[k][0],na_orders[k][1],na_orders[k][2]))== dt_order):
-                print k
-		
-	
-    ls_date_results = []
-    while dt_start_date <=dt_end_date:
-		ls_date_results.append(dt_start_date)
-		dt_start_date += dt_timeofday_date
-	'''	
 
-   #for row in na_portfolio_sorted:
-		
-  
+
    
     
 if __name__ == '__main__':
