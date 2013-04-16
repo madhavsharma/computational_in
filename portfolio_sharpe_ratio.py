@@ -48,7 +48,7 @@ def folio_sim(dt_start,dt_end,ls_symbol,ls_allocation):
 
     # Getting the numpy ndarray of close prices.
     na_price = d_data['close'].values
-
+    print na_price
     # Normalizing the prices to start at 1 and see relative returns
     na_normalized_price = na_price / na_price[0, :]
     # Get the respective returns of the individual stocks based on their allocations
