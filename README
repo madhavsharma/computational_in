@@ -1,3 +1,19 @@
 This is repository is created for the work i am doing for computational investing Course taught by Dr Balch of Georgia Tech. 
 
+This projects builds a market portfolio manager simulator and a portfolio optimizer with following features :
 
+* Accepts simulated market orders.
+
+* Assess the portfolio based on various factors like Sharpe ratio, cumulative return, average daily return etc
+
+* Finds best allocation strategy for portfolio.
+
+* Event studies based on historical information.
+
+* Create orders from event studies or historical data and back tests the profit earning portfolio strategies.
+
+* Can compare the performance of the portfolio with respect to SPX and SPY.
+
+* Implement Bollinger bands as an indicator using 20 day look back.
+
+* Back Test with Bollinger bands.
